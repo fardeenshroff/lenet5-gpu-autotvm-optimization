@@ -14,6 +14,9 @@ collecting new performance measurements.
   trains on MNIST, records test accuracy, and measures inference latency.
 - **NVIDIA GPU:** [Open the Colab notebook](https://colab.research.google.com/github/fardeenshroff/lenet5-gpu-autotvm-optimization/blob/main/notebooks/gpu_benchmark_colab.ipynb)
   with a GPU runtime to collect fresh CUDA and CPU comparison results.
+- **NVIDIA proof:** [CUDA runtime verification script](scripts/verify_cuda_runtime.py)
+  executes and validates a real GPU operation, not just a GPU-presence check.
+- **Laptop fallback:** [Windows/Linux instructions](docs/RUN_ON_LAPTOP.md) for local NVIDIA hardware.
 - **Raw scripts:** See [setup](docs/SETUP.md) to use your own Linux/NVIDIA environment.
 
 The historical study's measurements and newly generated benchmarks are
