@@ -76,7 +76,7 @@ def import_relax(model, example: torch.Tensor, relax, from_exported_program):
 
 
 def lower_relax(ir_mod, relax, target):
-    return relax.get_pipeline("zero", target=target)(ir_mod)
+    return relax.get_pipeline("zero")(ir_mod)
 
 
 def default_gpu_schedule(tvm, mod, target):
@@ -192,7 +192,7 @@ def benchmark_batch(args, batch_size: int, model, device_torch,
         start_tuning = time.perf_counter()
         with target:
             tuned_mod = tvm_tirx.ir.transform.Sequential([
-                relax.get_pipeline("zero", target=target),
+                relax.get_pipeline("zero"),
                 relax.transform.MetaScheduleTuneTIR(
                     work_dir=str(dir_path),
                     max_trials_global=args.trials,
