@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lenet5-relax-metaschedule"
+version = "0.1.0"
+description = "Reproducible LeNet-5 inference optimization with Apache TVM Relax and MetaSchedule"
+requires-python = ">=3.10"
+dependencies = ["torch>=2.2", "torchvision>=0.17", "numpy>=1.24"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "nbformat>=5.9"]
+
+[project.scripts]
+lenet-relax-benchmark = "relax_meta.benchmark:main"
+lenet-relax-train = "relax_meta.train:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"

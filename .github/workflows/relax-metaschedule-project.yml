@@ -1,0 +1,28 @@
+name: Relax MetaSchedule subproject CI
+on:
+  push:
+    paths:
+      - 'projects/lenet5-relax-metaschedule/**'
+      - '.github/workflows/relax-metaschedule-project.yml'
+  pull_request:
+    paths:
+      - 'projects/lenet5-relax-metaschedule/**'
+      - '.github/workflows/relax-metaschedule-project.yml'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: projects/lenet5-relax-metaschedule
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install CPU-test dependencies
+        run: python -m pip install -e '.[dev]'
+      - name: Test model, report semantics and notebook
+        run: python -m pytest -q
+      - name: Compile Python sources
+        run: python -m compileall -q src

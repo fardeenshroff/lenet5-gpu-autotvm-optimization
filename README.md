@@ -21,6 +21,12 @@ The Google Colab experiment on **22 November 2026** produced verified PyTorch CP
 
 **Scope:** The 18.03× value is a synchronized **PyTorch forward-pass** comparison using the same checkpoint and batch size on both devices. This is not a newly reproduced TVM/AutoTVM compiler result, and the historical 2.39× claim is discussed separately.
 
+## New project — LeNet-5 with Relax and MetaSchedule
+
+The modern compiler-optimization follow-up is now available as a [standalone project](projects/lenet5-relax-metaschedule/README.md) with [full source](projects/lenet5-relax-metaschedule/src/relax_meta/benchmark.py), [free GPU Colab notebook](https://colab.research.google.com/github/fardeenshroff/lenet5-gpu-autotvm-optimization/blob/main/projects/lenet5-relax-metaschedule/notebooks/relax_metaschedule_colab.ipynb), and CPU-validated tests. It compares **PyTorch CUDA**, **Relax default GPU schedules**, and **MetaSchedule-tuned Relax** on the **same checkpoint and GPU**. The key result is **tuned Relax / untuned Relax** latency improvement, not the previous PyTorch CPU/GPU speedup.
+
+**Execution status:** All 16 source-side tests pass; the project has no new measured MetaSchedule GPU speedup yet. Results are generated only when a real CUDA run passes correctness validation.
+
 ## Run the code online
 
 - **CPU (automated):** [GitHub Actions benchmark](../../actions/workflows/benchmark-cpu.yml)
