@@ -19,7 +19,8 @@ def main() -> None:
         report["pytorch_gpu"] = torch.cuda.get_device_name(0)
     try:
         import tvm
-        import tvm_tirx
+        import tvm.tirx
+        tvm_tirx = tvm
         from tvm import relax
         from tvm.s_tir.meta_schedule import relax_integration
         report["tvm"] = getattr(tvm, "__version__", "unknown")

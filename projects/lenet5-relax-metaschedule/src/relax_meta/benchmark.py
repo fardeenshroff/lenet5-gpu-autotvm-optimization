@@ -30,7 +30,8 @@ from .report import calculate_speedup, save_json, summarize_ms
 def get_tvm():
     try:
         import tvm
-        import tvm_tirx
+        import tvm.tirx  # TIRx is included in the pinned Apache TVM 0.27 wheel.
+        tvm_tirx = tvm  # TVM 0.27 owns target, runtime, and IR namespaces.
         from tvm import relax
         from tvm.relax.frontend.torch import from_exported_program
         from tvm.s_tir.meta_schedule.relax_integration import extract_tasks
@@ -39,7 +40,7 @@ def get_tvm():
         raise RuntimeError(
             "Modern Apache TVM with Relax, TIRx and MetaSchedule is required. "
             "Install apache-tvm[cuda,torch,meta-schedule]==0.27.0.post1 "
-            "and apache-tvm-tirx[cuda]==0.1.0 on a CUDA-capable GPU host."
+            "with its bundled tvm.tirx module on a CUDA-capable GPU host."
         ) from exc
 
 

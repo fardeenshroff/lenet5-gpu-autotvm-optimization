@@ -2,13 +2,13 @@
 
 ## Verified API baseline
 
-This project tracks the modern Apache TVM documentation for `Relax`, `MetaScheduleTuneTIR`, `MetaScheduleApplyDatabase`, `tvm.compile`, and `tvm_tirx.runtime.tensor`. The pinned PyPI wheels are `apache-tvm==0.27.0.post1` (September 2026) and `apache-tvm-tirx==0.1.0` (November 2026). The TIRx runtime is a separate distribution and must be installed explicitly. An NVIDIA GPU with a CUDA-capable TVM runtime is required to run the optimization itself.
+This project tracks the modern Apache TVM documentation for `Relax`, `MetaScheduleTuneTIR`, `MetaScheduleApplyDatabase`, `tvm.compile`, and `tvm.runtime.tensor`. **Pin a coherent single installation:** `apache-tvm==0.27.0.post1`. This wheel already bundles `tvm.tirx`. The separately released `apache-tvm-tirx==0.1.0` is not binary-compatible with this older TVM wheel in our CI verification, causing a native process abort; do not install both for this pinned environment. An NVIDIA GPU with a CUDA-capable TVM runtime is required to run the optimization itself.
 
 **Two namespaces matter:**
 
 ```python
 import tvm               # High-level Relax compiler API
-import tvm_tirx          # Target, runtime tensors, low-level IR/transform
+import tvm.tirx           # TensorIR compiler bundled in Apache TVM 0.27
 from tvm import relax
 ```
 
@@ -34,7 +34,6 @@ source .venv/bin/activate
 python -m pip install --upgrade pip
 python -m pip install -e '.[dev]'
 python -m pip install 'apache-tvm[cuda,torch,meta-schedule]==0.27.0.post1'
-python -m pip install 'apache-tvm-tirx[cuda]==0.1.0'
 python -m relax_meta.environment
 ```
 
@@ -47,7 +46,8 @@ If `tvm_cuda_available` is `false` but PyTorch sees the GPU, this TVM installati
 | Symptom | Likely cause | Remedy |
 |---|---|---|
 | `No module named tvm` | Wheel not installed in current interpreter | Re-run pinned TVM installation in notebook/kernel |
-| `No module named tvm_tirx` | Missing separate TIRx dependency | Install `apache-tvm-tirx[cuda]==0.1.0` explicitly |
+| `No module named tvm.tirx` | TVM wheel is absent, incompatible, or from another interpreter | Install the pinned `apache-tvm` wheel in this interpreter |
+| Python abort importing `tvm_tirx` | Two independent incompatible TVM/TIRx shared libraries installed | Start a clean runtime; install only the pinned `apache-tvm==0.27.0.post1` wheel |
 | `PyTorch CUDA unavailable` | CPU runtime, incompatible driver or PyTorch build | Attach GPU and verify `torch.cuda.is_available()` |
 | `TVM CUDA runtime unavailable` | TVM built without CUDA support | Rebuild/install CUDA-capable TVM |
 | Relax frontend export fails | PyTorch/TVM operator or version mismatch | Record version, inspect failed operator; check upstream model import docs |
@@ -63,4 +63,4 @@ If `tvm_cuda_available` is `false` but PyTorch sees the GPU, this TVM installati
 - <https://pypi.org/project/apache-tvm/>
 
 - <https://tvm.apache.org/docs/tirx/install.html>
-- <https://pypi.org/project/apache-tvm-tirx/>
+- <https://tvm.apache.org/docs/tirx/install.html>

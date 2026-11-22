@@ -72,7 +72,6 @@ source .venv/bin/activate
 python -m pip install --upgrade pip
 python -m pip install -e '.[dev]'
 python -m pip install 'apache-tvm[cuda,torch,meta-schedule]==0.27.0.post1'
-python -m pip install 'apache-tvm-tirx[cuda]==0.1.0'
 python -m relax_meta.environment
 python -m pytest -q
 ```
@@ -126,7 +125,7 @@ The output JSON contains **three** latency distributions for each batch size: `p
 - The scripts measure **inference**, not training. Training uses PyTorch Adam; Relax/MetaSchedule compilation occurs **after** checkpoint generation.
 - Device-to-device inputs and weights are preallocated; the timed region **excludes** host-to-device and device-to-host transfers, and excludes model compilation and tuning. Python dispatch **is included**. Comparisons are meaningful only with matching scope.
 - Each timing summary contains seven samples (default); a single Colab session is **not** enough to make a statistical significance claim. Run multiple independent sessions and report uncertainty before peer-reviewed publication.
-- Exact TVM APIs evolve. This project targets `apache-tvm==0.27.0.post1` and the separately packaged `apache-tvm-tirx==0.1.0`; current documentation also uses the `tvm_tirx` package for target/runtime operations. Platform-dependent build fixes may be required.
+- Exact TVM APIs evolve. This project targets `apache-tvm==0.27.0.post1` using its included `tvm.tirx` compiler and runtime namespaces. Do **not** install an independently versioned `apache-tvm-tirx==0.1.0` alongside the pinned wheel: this combination caused a native ABI abort in GitHub Actions. Exact APIs and GPU backend builds remain platform-dependent.
 - **Status:** source and CPU unit tests validated; a genuine GPU MetaSchedule run has **not yet been executed by this project**. Benchmark fields remain absent until execution.
 
 ## Project layout

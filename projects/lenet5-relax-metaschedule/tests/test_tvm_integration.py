@@ -14,7 +14,8 @@ from relax_meta.model import LeNet5
 @pytest.mark.skipif(os.environ.get('RUN_TVM_CPU_INTEGRATION') != '1', reason='opt-in TVM API check')
 def test_relax_frontend_and_legalization():
     import tvm
-    import tvm_tirx
+    import tvm.tirx
+    tvm_tirx = tvm
     from tvm import relax
     from tvm.relax.frontend.torch import from_exported_program
     from tvm.s_tir.meta_schedule.relax_integration import extract_tasks
@@ -27,5 +28,6 @@ def test_relax_frontend_and_legalization():
     assert params
     target = tvm_tirx.target.Target('llvm')
     legalized = lower_relax(mod, relax, target)
+    assert hasattr(tvm.runtime, 'tensor'), 'Pinned TVM wheel missing runtime tensor API'
     tasks = extract_tasks(legalized, target)
     assert len(tasks) > 0, 'No TIR tasks generated from LeNet-5 Relax graph'

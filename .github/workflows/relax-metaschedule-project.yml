@@ -8,7 +8,6 @@ on:
     paths:
       - 'projects/lenet5-relax-metaschedule/**'
       - '.github/workflows/relax-metaschedule-project.yml'
-
 jobs:
   unit-tests:
     runs-on: ubuntu-latest
@@ -20,13 +19,12 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Install dependencies
+      - name: Install project and dev dependencies
         run: python -m pip install -e '.[dev]'
-      - name: Test model, report semantics, export, and notebook
+      - name: Test PyTorch model and experiment code
         run: python -m pytest -q
-      - name: Compile Python sources
+      - name: Compile sources
         run: python -m compileall -q src
-
   tvm-cpu-integration:
     runs-on: ubuntu-latest
     timeout-minutes: 20
@@ -38,12 +36,13 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Install pinned TVM and the separate TIRx runtime
+      - name: Install pinned TVM 0.27 with bundled tvm.tirx
         run: |
           python -m pip install -e '.[dev]'
           python -m pip install 'apache-tvm[torch,meta-schedule]==0.27.0.post1'
-          python -m pip install 'apache-tvm-tirx==0.1.0'
-      - name: Validate real Relax import and TensorIR task extraction
+      - name: Confirm bundled TVM TensorIR interface and run Relax integration
         env:
           RUN_TVM_CPU_INTEGRATION: '1'
-        run: python -m pytest -q tests/test_tvm_integration.py
+        run: |
+          python -c 'import tvm,tvm.tirx; print(tvm.__version__)'
+          python -m pytest -q tests/test_tvm_integration.py
