@@ -1,0 +1,68 @@
+name: Five-Epoch CPU MNIST Benchmark
+
+on:
+  push:
+    paths:
+      - '.github/workflows/benchmark-cpu-five-epochs.yml'
+      - 'src/**'
+      - 'scripts/**'
+      - 'pyproject.toml'
+      - 'tests/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  cpu-benchmark:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install project
+        run: python -m pip install -e '.[test]'
+      - name: Verify model
+        run: python -m pytest -q
+      - name: Record environment
+        run: |
+          python - <<'PY'
+          import json, os, platform, subprocess
+          from pathlib import Path
+          import torch
+          report = {
+            "run_id": os.getenv("GITHUB_RUN_ID"),
+            "commit_sha": os.getenv("GITHUB_SHA"),
+            "runner_os": os.getenv("RUNNER_OS"),
+            "platform": platform.platform(),
+            "python_version": platform.python_version(),
+            "cpu_model": next((line.partition(":")[2].strip() for line in Path("/proc/cpuinfo").read_text().splitlines() if line.startswith("model name")), "unknown"),
+            "cpu_count": os.cpu_count(),
+            "torch_version": torch.__version__,
+            "cuda_available": torch.cuda.is_available(),
+          }
+          Path("results").mkdir(exist_ok=True)
+          Path("results/github_actions_five_epochs_environment.json").write_text(json.dumps(report, indent=2) + "\n")
+          print(json.dumps(report, indent=2))
+          PY
+      - name: Train LeNet-5 on MNIST (five epochs, CPU)
+        run: python scripts/train.py --epochs 5 --batch-size 256 --device cpu --output checkpoints/cloud_cpu_five_epochs.pt --metrics results/github_actions_five_epochs_cpu_training.json
+      - name: Benchmark trained model on CPU
+        run: python scripts/benchmark_pytorch.py --device cpu --checkpoint checkpoints/cloud_cpu_five_epochs.pt --warmup 30 --iterations 200 --output results/github_actions_five_epochs_cpu_inference.json
+      - name: Print verified results
+        if: always()
+        run: |
+          for file in results/github_actions_five_epochs_*.json; do
+            if test -f "$file"; then echo "=== $file ==="; cat "$file"; fi
+          done
+      - name: Upload results and model checkpoint
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cpu-five-epoch-benchmark-results
+          path: |
+            results/github_actions_five_epochs_*.json
+            checkpoints/cloud_cpu_five_epochs.pt
+          if-no-files-found: warn
