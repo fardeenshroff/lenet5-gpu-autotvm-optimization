@@ -1,0 +1,47 @@
+{
+  "title": "GitHub Actions CPU LeNet-5 benchmark — 2026-11-22",
+  "source": {
+    "workflow_run_id": 45046364801,
+    "workflow_url": "https://github.com/fardeenshroff/lenet5-gpu-autotvm-optimization/actions/runs/45046364801",
+    "artifact_url": "https://github.com/fardeenshroff/lenet5-gpu-autotvm-optimization/actions/runs/45046364801/artifacts/14762724896",
+    "benchmark_source_commit": "5bab863c2559b0f83da06b5f3c448d7b6b521f96",
+    "conclusion": "success"
+  },
+  "environment": {
+    "runner_os": "Linux",
+    "platform": "Linux-7.0.0-1014-aws-x86_64-with-glibc2.39",
+    "python_version": "3.11.18",
+    "cpu_model": "Intel(R) Xeon(R) 6975P-C",
+    "logical_cpu_count": 4,
+    "pytorch": "2.15.0+cu132",
+    "cuda_available": false
+  },
+  "mnist_training": {
+    "backend": "PyTorch training",
+    "device": "cpu",
+    "epochs": 1,
+    "batch_size": 512,
+    "wall_seconds": 7.684056693999992,
+    "mean_train_loss": 0.757940117585457,
+    "test_accuracy_fraction": 0.9234,
+    "test_accuracy_percent": 92.34
+  },
+  "pytorch_cpu_inference": {
+    "backend": "PyTorch eager inference",
+    "device": "cpu",
+    "batch_size": 1,
+    "warmup_iterations": 30,
+    "timed_iterations": 200,
+    "mean_latency_ms": 0.14817274999870733,
+    "median_latency_ms": 0.14427150000528854,
+    "min_latency_ms": 0.13818700000456374,
+    "max_latency_ms": 0.19313599997872188,
+    "method": "synchronized end-to-end forward call on synthetic random input with trained MNIST checkpoint"
+  },
+  "verification": {
+    "model_tests": "3 passed on GitHub Actions",
+    "gpu_benchmark_executed": false,
+    "autotvm_benchmark_executed": false,
+    "historical_2_39x_training_speedup_reproduced": false
+  }
+}

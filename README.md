@@ -19,6 +19,22 @@ collecting new performance measurements.
 The historical study's measurements and newly generated benchmarks are
 reported separately to make results independently interpretable.
 
+## Verified new cloud benchmark — November 22, 2026
+
+A completed [GitHub Actions benchmark](https://github.com/fardeenshroff/lenet5-gpu-autotvm-optimization/actions/runs/45046364801) recorded the following **new CPU measurements** on an Intel Xeon 6975P-C Linux runner:
+
+| Measurement | Verified new result |
+|---|---:|
+| MNIST test accuracy after 1 epoch | **92.34%** |
+| CPU training loop time, 1 epoch | **7.684 s** |
+| PyTorch CPU inference median, batch 1 | **0.1443 ms** |
+| PyTorch CPU inference mean, batch 1 | **0.1482 ms** |
+| Unit tests | **3 passed** |
+
+[Detailed methodology and raw results](docs/ONLINE_BENCHMARK_RESULTS.md) · [Raw JSON](results/verified_cloud_cpu_2026-11-22.json)
+
+**Scope:** The runner had no NVIDIA GPU. These new numbers are CPU-only and are not a new verification of the historical GPU training speedup.
+
 ## Original research study: reported outcomes
 
 | Platform | Reported training time | Test accuracy | Relative speedup |
