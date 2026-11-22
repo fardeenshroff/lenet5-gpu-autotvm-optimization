@@ -1,0 +1,30 @@
+name: TVM wheel namespace diagnostics
+on:
+  push:
+    paths:
+      - '.github/workflows/tvm-namespace-diagnostics.yml'
+  workflow_dispatch:
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install 'apache-tvm[torch,meta-schedule]==0.27.0.post1'
+      - name: Print TVM namespaces in fresh Python interpreters
+        run: |
+          set +e
+          python - <<'PY'
+          import importlib.util, tvm
+          print('TVM VERSION:',tvm.__version__)
+          for module in ('tvm.tirx','tvm_tirx','tvm.s_tir','tvm.relax','tvm.target','tvm.runtime'):
+              try:
+                  print('MODULE',module, importlib.util.find_spec(module))
+              except BaseException as exc: print('MODULE ERROR',module,repr(exc))
+          print('ATTRS', [k for k in ('cuda','target','tirx','relax','s_tir','compile','ir') if hasattr(tvm,k)])
+          PY
+          python -c 'from tvm import relax; print("RELAX import success")'
+          python -c 'import tvm.tirx as t; print("TVM.TIRX import success",t)'
+          python -c 'from tvm.s_tir.meta_schedule.relax_integration import extract_tasks; print("EXTRACT TASKS import success")'
+          exit 0
