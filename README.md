@@ -12,8 +12,9 @@ collecting new performance measurements.
 
 - **CPU (automated):** [GitHub Actions benchmark](../../actions/workflows/benchmark-cpu.yml)
   trains on MNIST, records test accuracy, and measures inference latency.
-- **NVIDIA GPU:** [Open the Colab notebook](https://colab.research.google.com/github/fardeenshroff/lenet5-gpu-autotvm-optimization/blob/main/notebooks/gpu_benchmark_colab.ipynb)
-  with a GPU runtime to collect fresh CUDA and CPU comparison results.
+- **NVIDIA GPU — five-epoch accuracy run:** [Open the updated Colab notebook](https://colab.research.google.com/github/fardeenshroff/lenet5-gpu-autotvm-optimization/blob/main/notebooks/gpu_benchmark_colab.ipynb)
+  with a GPU runtime to train MNIST for **five epochs**, collect per-epoch test accuracy, and compare CUDA versus CPU training and inference. The notebook exports a separate five-epoch results ZIP.
+- **Five-epoch CPU cross-check:** [GitHub Actions workflow](../../actions/workflows/benchmark-cpu-five-epochs.yml) uses free online CPU resources; it does **not** establish GPU results.
 - **NVIDIA proof:** [CUDA runtime verification script](scripts/verify_cuda_runtime.py)
   executes and validates a real GPU operation, not just a GPU-presence check.
 - **Laptop fallback:** [Windows/Linux instructions](docs/RUN_ON_LAPTOP.md) for local NVIDIA hardware.
