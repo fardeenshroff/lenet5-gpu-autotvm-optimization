@@ -1,0 +1,30 @@
+{
+  "status": "verified_cuda_execution",
+  "timestamp_utc": "2026-11-22T17:20:32.696615+00:00",
+  "device_name": "Tesla T4",
+  "cuda_device_index": 0,
+  "device_count": 1,
+  "compute_capability": [
+    7,
+    5
+  ],
+  "gpu_memory_total_bytes": 15637086208,
+  "torch_version": "2.14.1+cu130",
+  "pytorch_cuda_runtime": "13.0",
+  "driver_info": {
+    "available": true,
+    "returncode": 0,
+    "output": "Tesla T4, 580.82.07, 15360 MiB"
+  },
+  "nvcc_available": true,
+  "os": "Linux-6.6.159+-x86_64-with-glibc2.39",
+  "python": "3.13.16",
+  "test_operation": "float32 256x256 GPU matrix multiplication vs CPU",
+  "test_passed": true,
+  "max_absolute_error": 0.000041961669921875,
+  "cuda_event_kernel_latency_median_ms": 0.059728000313043594,
+  "cuda_event_kernel_latency_mean_ms": 0.06154186706990004,
+  "timed_operations": 60,
+  "timing_scope": "CUDA events for matrix multiplication, excluding host Python overhead",
+  "historical_2_39x_result_reproduced": false
+}

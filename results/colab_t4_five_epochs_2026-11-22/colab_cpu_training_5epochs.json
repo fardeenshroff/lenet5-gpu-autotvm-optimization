@@ -1,0 +1,41 @@
+{
+  "backend": "PyTorch training",
+  "device": "cpu",
+  "torch_version": "2.14.1+cu130",
+  "batch_size": 256,
+  "total_wall_seconds": 122.27367926799991,
+  "final_test_accuracy": 0.9858,
+  "epochs": [
+    {
+      "epoch": 1,
+      "test_accuracy": 0.9492,
+      "mean_train_loss": 0.5434864345383137,
+      "wall_seconds": 27.86805816499998
+    },
+    {
+      "epoch": 2,
+      "test_accuracy": 0.9739,
+      "mean_train_loss": 0.17903105638762737,
+      "wall_seconds": 23.820659438999996
+    },
+    {
+      "epoch": 3,
+      "test_accuracy": 0.9806,
+      "mean_train_loss": 0.11713549943363413,
+      "wall_seconds": 23.131737626000017
+    },
+    {
+      "epoch": 4,
+      "test_accuracy": 0.983,
+      "mean_train_loss": 0.09420438432630072,
+      "wall_seconds": 23.706615889999966
+    },
+    {
+      "epoch": 5,
+      "test_accuracy": 0.9858,
+      "mean_train_loss": 0.07965807893333283,
+      "wall_seconds": 23.745656370000006
+    }
+  ],
+  "checkpoint": "checkpoints/colab_cpu_5epochs.pt"
+}

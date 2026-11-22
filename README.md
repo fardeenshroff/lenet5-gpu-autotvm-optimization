@@ -8,6 +8,19 @@ experiments, automated CPU tests, and benchmark workflows. It documents
 my LeNet-5 acceleration research on an NVIDIA GPU and provides tools for
 collecting new performance measurements.
 
+## Validated NVIDIA Tesla T4 performance — five epochs
+
+The Google Colab experiment on **22 November 2026** produced verified PyTorch CPU-versus-GPU measurements on MNIST. The complete results and methodology appear in the [research manuscript](paper/Batch_Size_Dependent_LeNet5_GPU_Study.md); [all nine raw JSON reports](results/colab_t4_five_epochs_2026-11-22/) are publicly available.
+
+| Measure | Colab host CPU | NVIDIA Tesla T4 | Result |
+|---|---:|---:|---:|
+| Five-epoch training + evaluation | 122.274 s | 82.904 s | **1.47× GPU speedup** |
+| Epoch-five MNIST test accuracy | 98.58% | 98.52% | Similar accuracy |
+| Median inference, batch size 1 | 0.4494 ms | 0.3486 ms | **1.29× GPU speedup** |
+| Median inference, batch size 128 | 7.4287 ms | 0.4119 ms | **18.03× GPU speedup** |
+
+**Scope:** The 18.03× value is a synchronized **PyTorch forward-pass** comparison using the same checkpoint and batch size on both devices. This is not a newly reproduced TVM/AutoTVM compiler result, and the historical 2.39× claim is discussed separately.
+
 ## Run the code online
 
 - **CPU (automated):** [GitHub Actions benchmark](../../actions/workflows/benchmark-cpu.yml)
@@ -29,7 +42,7 @@ A completed [GitHub Actions five-epoch run](https://github.com/fardeenshroff/len
 
 [Five-epoch results report](docs/FIVE_EPOCH_CPU_RESULTS.md) · [Verified raw JSON](results/verified_cloud_cpu_5epochs_2026-11-22.json) · [Run artifact and model checkpoint](https://github.com/fardeenshroff/lenet5-gpu-autotvm-optimization/actions/runs/45048386353/artifacts/14764786383)
 
-**Important:** This five-epoch run measured **CPU** accuracy, not GPU. Use the updated Colab notebook above to produce a corresponding five-epoch NVIDIA result.
+**Scope:** This independent GitHub Actions run measured CPU-only accuracy on another machine; the matched Colab CPU-versus-GPU comparison and its raw results appear in the NVIDIA T4 section above.
 
 ## Verified new cloud benchmark — November 22, 2026
 

@@ -1,0 +1,38 @@
+{
+  "status": "completed_with_actual_cuda_execution",
+  "run_time_utc": "2026-11-22T17:24:27.702490+00:00",
+  "source_repo": "https://github.com/fardeenshroff/lenet5-gpu-autotvm-optimization.git",
+  "git_commit": "d0be4d471699153fe69c395f336ab52375a9402c",
+  "epochs": 5,
+  "gpu": "Tesla T4",
+  "cuda_runtime_verified": true,
+  "cuda_training_accuracy_percent": 98.52,
+  "cuda_training_duration_seconds": 82.90360534700005,
+  "cpu_training_accuracy_percent": 98.58,
+  "cpu_training_duration_seconds": 122.27367926799991,
+  "pytorch_cpu_to_cuda_training_speedup": 1.4748897681375024,
+  "training_comparison_method": "five epochs, PyTorch both devices, same host and batch size; not AutoTVM",
+  "inference_comparisons": [
+    {
+      "batch_size": 1,
+      "cpu_median_ms": 0.44938150006146316,
+      "gpu_median_ms": 0.34864800011291663,
+      "cpu_to_gpu_inference_speedup": 1.2889260799313977,
+      "iterations": 100
+    },
+    {
+      "batch_size": 128,
+      "cpu_median_ms": 7.428717000038887,
+      "gpu_median_ms": 0.41190799993273686,
+      "cpu_to_gpu_inference_speedup": 18.034893717169783,
+      "iterations": 100
+    }
+  ],
+  "cuda_cpp_kernel": {
+    "status": "passed",
+    "exit_code": 0,
+    "stdout": "Average CUDA kernel time (ms): 0.00616448\nMax absolute error vs CPU: 9.53674e-07\n",
+    "stderr": ""
+  },
+  "historical_2_39x_training_speedup_reproduced": false
+}

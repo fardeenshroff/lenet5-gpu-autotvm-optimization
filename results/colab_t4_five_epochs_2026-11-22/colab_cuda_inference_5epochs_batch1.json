@@ -1,0 +1,14 @@
+{
+  "backend": "PyTorch eager inference",
+  "torch_version": "2.14.1+cu130",
+  "warmup": 30,
+  "iterations": 100,
+  "method": "synchronized end-to-end PyTorch forward call",
+  "device": "cuda",
+  "hardware": "Tesla T4",
+  "batch_size": 1,
+  "mean_ms": 0.35413083000548795,
+  "median_ms": 0.34864800011291663,
+  "min_ms": 0.3178970000590198,
+  "max_ms": 0.5018130000280507
+}

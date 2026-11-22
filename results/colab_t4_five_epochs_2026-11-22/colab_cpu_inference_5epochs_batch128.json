@@ -1,0 +1,14 @@
+{
+  "backend": "PyTorch eager inference",
+  "torch_version": "2.14.1+cu130",
+  "warmup": 30,
+  "iterations": 100,
+  "method": "synchronized end-to-end PyTorch forward call",
+  "device": "cpu",
+  "hardware": "CPU",
+  "batch_size": 128,
+  "mean_ms": 8.928761090021453,
+  "median_ms": 7.428717000038887,
+  "min_ms": 6.440111000074467,
+  "max_ms": 14.18500100021447
+}

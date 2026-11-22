@@ -1,0 +1,41 @@
+{
+  "backend": "PyTorch training",
+  "device": "cuda",
+  "torch_version": "2.14.1+cu130",
+  "batch_size": 256,
+  "total_wall_seconds": 82.90360534700005,
+  "final_test_accuracy": 0.9852,
+  "epochs": [
+    {
+      "epoch": 1,
+      "test_accuracy": 0.948,
+      "mean_train_loss": 0.5489739267115897,
+      "wall_seconds": 19.944305177000047
+    },
+    {
+      "epoch": 2,
+      "test_accuracy": 0.9721,
+      "mean_train_loss": 0.17753582520687833,
+      "wall_seconds": 15.128702540000063
+    },
+    {
+      "epoch": 3,
+      "test_accuracy": 0.9792,
+      "mean_train_loss": 0.11729178341462257,
+      "wall_seconds": 15.987355786999956
+    },
+    {
+      "epoch": 4,
+      "test_accuracy": 0.9844,
+      "mean_train_loss": 0.0925137089605027,
+      "wall_seconds": 14.807300426999973
+    },
+    {
+      "epoch": 5,
+      "test_accuracy": 0.9852,
+      "mean_train_loss": 0.08140774981534861,
+      "wall_seconds": 17.035137331999977
+    }
+  ],
+  "checkpoint": "checkpoints/colab_cuda_5epochs.pt"
+}

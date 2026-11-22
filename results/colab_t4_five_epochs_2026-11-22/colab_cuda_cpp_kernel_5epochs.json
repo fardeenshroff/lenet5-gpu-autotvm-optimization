@@ -1,0 +1,6 @@
+{
+  "status": "passed",
+  "exit_code": 0,
+  "stdout": "Average CUDA kernel time (ms): 0.00616448\nMax absolute error vs CPU: 9.53674e-07\n",
+  "stderr": ""
+}
