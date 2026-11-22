@@ -170,15 +170,23 @@ def benchmark_batch(args, batch_size: int, model, device_torch,
     np.random.seed(args.seed)
     torch.manual_seed(args.seed)
     torch.cuda.manual_seed_all(args.seed)
+    def progress(stage: str) -> None:
+        print(f"[stage][batch={batch_size}] {stage}", flush=True)
+
+    progress("Exporting PyTorch checkpoint to Relax")
     example = torch.randn(batch_size, 1, 28, 28, dtype=torch.float32)
     ir_mod, weights = import_relax(model, example, relax, from_exported_program)
+    progress("Legalizing Relax operators to TensorIR")
     lowered = lower_relax(ir_mod, relax, target)
+    progress("Extracting MetaSchedule candidate tasks")
     tasks = extract_tasks(lowered, target)
     task_metadata = [{"name": str(task.task_name), "weight": int(task.weight)}
                      for task in tasks]
     # For fairness, the same Relax IR, checkpoint, target and inputs are used
     # for both compiled variants. Only the scheduling choice changes.
+    progress("Applying default CUDA schedules")
     baseline_mod = default_gpu_schedule(tvm, lowered, target)
+    progress("Compiling untuned Relax CUDA virtual machine")
     baseline_vm = new_virtual_machine(tvm, tvm_tirx, relax,
                                       baseline_mod, target, tvm_device)
 
@@ -190,6 +198,7 @@ def benchmark_batch(args, batch_size: int, model, device_torch,
     if args.trials > 0:
         dir_path.mkdir(parents=True, exist_ok=True)
         start_tuning = time.perf_counter()
+        progress(f"Starting MetaSchedule search ({args.trials} global trials)")
         with target:
             tuned_mod = tvm_tirx.ir.transform.Sequential([
                 relax.get_pipeline("zero"),
@@ -204,16 +213,20 @@ def benchmark_batch(args, batch_size: int, model, device_torch,
                 ),
             ])(ir_mod)
         tuning_sec = time.perf_counter() - start_tuning
+        progress(f"MetaSchedule search finished in {tuning_sec:.2f} s")
         db_after = count_records(dir_path)
         if db_after == 0:
             raise RuntimeError(
                 f"MetaSchedule wrote zero tuning records for batch {batch_size}; "
                 "refusing to label this execution as tuned."
             )
+        progress("Applying default fallback to remaining untuned kernels")
         tuned_mod = default_gpu_schedule(tvm, tuned_mod, target)
+        progress("Compiling MetaSchedule-tuned Relax CUDA virtual machine")
         tuned_vm = new_virtual_machine(tvm, tvm_tirx, relax,
                                        tuned_mod, target, tvm_device)
 
+    progress("Allocating identical input and model weights on CUDA device")
     gpu_input = tvm_tirx.runtime.tensor(example.numpy(), device=tvm_device)
     gpu_weights = [tvm_tirx.runtime.tensor(
         np.asarray(p.numpy() if hasattr(p, "numpy") else p, dtype=np.float32),
@@ -226,6 +239,7 @@ def benchmark_batch(args, batch_size: int, model, device_torch,
     def eval_vm(vm):
         return vm["main"](gpu_input, *gpu_weights)
 
+    progress("Validating compiled Relax outputs against PyTorch")
     baseline_out = as_numpy(eval_vm(baseline_vm))
     baseline_check = assert_close(baseline_out, torch_out, args.rtol, args.atol)
     tuned_check = None
@@ -241,6 +255,7 @@ def benchmark_batch(args, batch_size: int, model, device_torch,
     def sync_torch():
         torch.cuda.synchronize(device_torch)
 
+    progress("Benchmarking warmed-up and synchronized inference")
     with torch.inference_mode():
         pytorch_timing = timed_forward(
             lambda: torch_model(x_torch), sync_torch,
