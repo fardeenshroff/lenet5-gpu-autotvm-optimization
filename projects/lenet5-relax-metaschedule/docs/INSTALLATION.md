@@ -2,7 +2,7 @@
 
 ## Verified API baseline
 
-This project tracks the modern Apache TVM documentation for `Relax`, `MetaScheduleTuneTIR`, `MetaScheduleApplyDatabase`, `tvm.compile`, and `tvm_tirx.runtime.tensor`. The pinned PyPI wheel is `apache-tvm==0.27.0.post1`, released in September 2026. An NVIDIA GPU with a CUDA-capable TVM runtime is required to run the optimization itself.
+This project tracks the modern Apache TVM documentation for `Relax`, `MetaScheduleTuneTIR`, `MetaScheduleApplyDatabase`, `tvm.compile`, and `tvm_tirx.runtime.tensor`. The pinned PyPI wheels are `apache-tvm==0.27.0.post1` (September 2026) and `apache-tvm-tirx==0.1.0` (November 2026). The TIRx runtime is a separate distribution and must be installed explicitly. An NVIDIA GPU with a CUDA-capable TVM runtime is required to run the optimization itself.
 
 **Two namespaces matter:**
 
@@ -34,6 +34,7 @@ source .venv/bin/activate
 python -m pip install --upgrade pip
 python -m pip install -e '.[dev]'
 python -m pip install 'apache-tvm[cuda,torch,meta-schedule]==0.27.0.post1'
+python -m pip install 'apache-tvm-tirx[cuda]==0.1.0'
 python -m relax_meta.environment
 ```
 
@@ -46,7 +47,7 @@ If `tvm_cuda_available` is `false` but PyTorch sees the GPU, this TVM installati
 | Symptom | Likely cause | Remedy |
 |---|---|---|
 | `No module named tvm` | Wheel not installed in current interpreter | Re-run pinned TVM installation in notebook/kernel |
-| `No module named tvm_tirx` | Missing separate TIRx dependency | Install TVM with its dependencies; avoid `--no-deps` |
+| `No module named tvm_tirx` | Missing separate TIRx dependency | Install `apache-tvm-tirx[cuda]==0.1.0` explicitly |
 | `PyTorch CUDA unavailable` | CPU runtime, incompatible driver or PyTorch build | Attach GPU and verify `torch.cuda.is_available()` |
 | `TVM CUDA runtime unavailable` | TVM built without CUDA support | Rebuild/install CUDA-capable TVM |
 | Relax frontend export fails | PyTorch/TVM operator or version mismatch | Record version, inspect failed operator; check upstream model import docs |
@@ -60,3 +61,6 @@ If `tvm_cuda_available` is `false` but PyTorch sees the GPU, this TVM installati
 - <https://tvm.apache.org/docs/deep_dive/tensor_ir/tutorials/meta_schedule.html>
 - <https://tvm.apache.org/docs/get_started/tutorials/quick_start.html>
 - <https://pypi.org/project/apache-tvm/>
+
+- <https://tvm.apache.org/docs/tirx/install.html>
+- <https://pypi.org/project/apache-tvm-tirx/>

@@ -39,7 +39,7 @@ def get_tvm():
         raise RuntimeError(
             "Modern Apache TVM with Relax, TIRx and MetaSchedule is required. "
             "Install apache-tvm[cuda,torch,meta-schedule]==0.27.0.post1 "
-            "in a supported Linux GPU environment."
+            "and apache-tvm-tirx[cuda]==0.1.0 on a CUDA-capable GPU host."
         ) from exc
 
 

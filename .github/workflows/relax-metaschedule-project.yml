@@ -38,11 +38,12 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Install project and pinned modern TVM wheel
+      - name: Install pinned TVM and the separate TIRx runtime
         run: |
           python -m pip install -e '.[dev]'
           python -m pip install 'apache-tvm[torch,meta-schedule]==0.27.0.post1'
-      - name: Validate real PyTorch export into Relax and TensorIR
+          python -m pip install 'apache-tvm-tirx==0.1.0'
+      - name: Validate real Relax import and TensorIR task extraction
         env:
           RUN_TVM_CPU_INTEGRATION: '1'
         run: python -m pytest -q tests/test_tvm_integration.py
