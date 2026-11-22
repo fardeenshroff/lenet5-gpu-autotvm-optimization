@@ -23,6 +23,14 @@ collecting new performance measurements.
 The historical study's measurements and newly generated benchmarks are
 reported separately to make results independently interpretable.
 
+## Verified five-epoch online MNIST benchmark — 98.58% accuracy
+
+A completed [GitHub Actions five-epoch run](https://github.com/fardeenshroff/lenet5-gpu-autotvm-optimization/actions/runs/45048386353) reached **98.58% MNIST test accuracy** on a cloud **CPU** (Intel Xeon Platinum 8573C) using PyTorch and batch size 256. The five-epoch wall time was **39.88 s**. The accuracy progressed from **94.92% → 97.39% → 98.06% → 98.30% → 98.58%**.
+
+[Five-epoch results report](docs/FIVE_EPOCH_CPU_RESULTS.md) · [Verified raw JSON](results/verified_cloud_cpu_5epochs_2026-11-22.json) · [Run artifact and model checkpoint](https://github.com/fardeenshroff/lenet5-gpu-autotvm-optimization/actions/runs/45048386353/artifacts/14764786383)
+
+**Important:** This five-epoch run measured **CPU** accuracy, not GPU. Use the updated Colab notebook above to produce a corresponding five-epoch NVIDIA result.
+
 ## Verified new cloud benchmark — November 22, 2026
 
 A completed [GitHub Actions benchmark](https://github.com/fardeenshroff/lenet5-gpu-autotvm-optimization/actions/runs/45046364801) recorded the following **new CPU measurements** on an Intel Xeon 6975P-C Linux runner:

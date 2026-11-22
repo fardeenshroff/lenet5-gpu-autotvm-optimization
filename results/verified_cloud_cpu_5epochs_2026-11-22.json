@@ -1,0 +1,82 @@
+{
+  "date": "2026-11-22",
+  "provenance": {
+    "run_id": 45048386353,
+    "url": "https://github.com/fardeenshroff/lenet5-gpu-autotvm-optimization/actions/runs/45048386353",
+    "artifact_url": "https://github.com/fardeenshroff/lenet5-gpu-autotvm-optimization/actions/runs/45048386353/artifacts/14764786383",
+    "source_commit": "ec97007ac2c1d03f3bc4b828612d0f92d4b61419",
+    "conclusion": "success"
+  },
+  "environment": {
+    "run_id": "45048386353",
+    "commit_sha": "ec97007ac2c1d03f3bc4b828612d0f92d4b61419",
+    "runner_os": "Linux",
+    "platform": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+    "python_version": "3.11.18",
+    "cpu_model": "INTEL(R) XEON(R) PLATINUM 8573C",
+    "cpu_count": 4,
+    "torch_version": "2.15.0+cu132",
+    "cuda_available": false
+  },
+  "training": {
+    "backend": "PyTorch training",
+    "device": "cpu",
+    "torch_version": "2.15.0+cu132",
+    "batch_size": 256,
+    "total_wall_seconds": 39.87774101099998,
+    "final_test_accuracy": 0.9858,
+    "epochs": [
+      {
+        "epoch": 1,
+        "mean_train_loss": 0.543486431748309,
+        "test_accuracy": 0.9492,
+        "wall_seconds": 8.136464512000003
+      },
+      {
+        "epoch": 2,
+        "mean_train_loss": 0.1790310431034007,
+        "test_accuracy": 0.9739,
+        "wall_seconds": 8.008315502000016
+      },
+      {
+        "epoch": 3,
+        "mean_train_loss": 0.1171354849921896,
+        "test_accuracy": 0.9806,
+        "wall_seconds": 7.966934510999977
+      },
+      {
+        "epoch": 4,
+        "mean_train_loss": 0.09420437294434994,
+        "test_accuracy": 0.983,
+        "wall_seconds": 7.903097674999998
+      },
+      {
+        "epoch": 5,
+        "mean_train_loss": 0.07965806260546471,
+        "test_accuracy": 0.9858,
+        "wall_seconds": 7.862390355000002
+      }
+    ],
+    "checkpoint": "checkpoints/cloud_cpu_five_epochs.pt"
+  },
+  "inference": {
+    "backend": "PyTorch eager inference",
+    "device": "cpu",
+    "hardware": "CPU",
+    "torch_version": "2.15.0+cu132",
+    "batch_size": 1,
+    "warmup": 30,
+    "iterations": 200,
+    "mean_ms": 0.18513578500062522,
+    "median_ms": 0.1794735000117953,
+    "min_ms": 0.17184799997949085,
+    "max_ms": 0.27111500000387423,
+    "method": "synchronized end-to-end PyTorch forward call"
+  },
+  "notes": [
+    "CPU-only cloud runner; no NVIDIA GPU or CUDA execution.",
+    "Training total includes per-epoch test-set evaluation.",
+    "Five-epoch training configured at batch size 256; previous one-epoch GitHub CPU run used batch size 512.",
+    "This CPU experiment does not reproduce the research study's historical 2.39x GPU result."
+  ]
+}
