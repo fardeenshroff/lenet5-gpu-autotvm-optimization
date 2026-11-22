@@ -41,6 +41,38 @@ If `pytorch_cuda_available` is `false`, select a CUDA-enabled PyTorch build usin
 
 If `tvm_cuda_available` is `false` but PyTorch sees the GPU, this TVM installation may lack CUDA support. Review [Apache TVM installation](https://tvm.apache.org/docs/install/index.html) and [source build](https://tvm.apache.org/docs/install/from_source.html). Do not report a MetaSchedule benchmark result from such an environment.
 
+## Diagnose a Colab `CalledProcessError`
+
+A notebook-level `CalledProcessError: exit status 1` only means that the
+benchmark process exited unsuccessfully. It does **not** identify the underlying
+Relax/MetaSchedule failure. Do not guess that more tuning trials will resolve it.
+
+The updated notebook has two separate checks:
+
+1. **Untuned Relax baseline:** `--trials 0` compiles and validates Relax CUDA
+   without launching MetaSchedule. Its output is saved to
+   `results/relax_baseline_smoke_batch1.log`. If it fails, investigate the
+   compiler/runtime or model lowering before attempting tuning.
+2. **MetaSchedule smoke test:** `--trials 16` runs only after the baseline
+   succeeds. All stdout/stderr is saved to `results/meta_smoke_batch1.log`
+   and the final 160 lines are printed automatically if it fails.
+
+In the Colab runtime, inspect the most recent failure directly:
+
+```python
+from pathlib import Path
+for name in ("results/relax_baseline_smoke_batch1.log",
+             "results/meta_smoke_batch1.log"):
+    p = Path(name)
+    if p.exists():
+        print(f"=== {p} ===")
+        print("\\n".join(p.read_text(errors="replace").splitlines()[-120:]))
+```
+
+If the error persists, preserve the complete `.log` file or copy the first
+Python/TVM exception and its preceding stage marker. Do not post a GPU speedup
+until both compiler correctness checks and latency measurements complete.
+
 ## Common failures
 
 | Symptom | Likely cause | Remedy |
